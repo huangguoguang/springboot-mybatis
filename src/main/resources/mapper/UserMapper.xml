@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.huangguang.mybatis.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="User">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="inviter_id" property="inviterId" jdbcType="VARCHAR"/>
+        <result column="inviter_name" property="inviterName" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="leave_time" property="leaveDate" jdbcType="TIMESTAMP"/>
+        <result column="is_use" property="isUse" jdbcType="CHAR"/>
+    </resultMap>
+
+    <insert id="saveUser" parameterType="User">
+        INSERT INTO t_user (
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="inviterId != null">inviter_id,</if>
+            <if test="inviterName != null">inviter_name,</if>
+            <if test="createDate != null">create_time,</if>
+            <if test="leaveDate != null">leave_time,</if>
+            <if test="isUse != null">is_use,</if>
+        </trim>
+        ) VALUES (
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="inviterId != null">#{inviterId},</if>
+            <if test="inviterName != null">#{inviterName},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="leaveDate != null">#{leaveDate},</if>
+            <if test="isUse != null">#{isUse},</if>
+        </trim>
+        )
+    </insert>
+
+    <select id="getUserList" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        id,name,inviter_id,inviter_name,create_time,leave_time,is_use
+        FROM
+        t_user
+        where
+        is_use = "1"
+        <if test="id != null">AND id = #{id}</if>
+        ORDER BY create_time DESC
+    </select>
+
+
+</mapper>
